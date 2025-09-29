@@ -1,10 +1,20 @@
 import React from 'react';
+import useResumeData from '../hooks/useResumeData';
 
 const Header = () => {
+  const { getPersonalInfo } = useResumeData();
+  const { name, birthDate, phone, email } = getPersonalInfo;
+
   return (
     <header className="header">
-      <h2>李繁宸</h2>
-      <h4>1991.06.13 | 13641875733 | lifanchenjulius@hotmail.com</h4>
+      <div className="header-content">
+        <h2>{name}</h2>
+        <div className="header-contact">
+          <span>{birthDate}</span>
+          <span>{phone}</span>
+          <span>{email}</span>
+        </div>
+      </div>
     </header>
   );
 };

@@ -1,25 +1,21 @@
 import React from 'react';
+import useResumeData from '../hooks/useResumeData';
 
 const Skills = () => {
+  const { getSkills } = useResumeData();
+
   return (
     <div className="area">
       <h2>专业技能</h2>
-      <table style={{ width: '100%' }}>
-        <tbody>
-          <tr>
-            <td>• 熟悉 VueJS</td>
-            <td>• 了解 ReactJS</td>
-          </tr>
-          <tr>
-            <td>• 熟悉 JavaScript ES6语法</td>
-            <td>• 熟悉前端工程化</td>
-          </tr>
-          <tr>
-            <td>• 了解 CSS3</td>
-            <td>• 熟悉敏捷开发</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="skills-grid">
+        {getSkills.map((skillRow, rowIndex) => (
+          <div key={rowIndex} className="skill-row">
+            {skillRow.map((skill, colIndex) => (
+              <div key={colIndex} className="skill-item">{skill}</div>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
