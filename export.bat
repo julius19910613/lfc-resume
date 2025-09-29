@@ -1,0 +1,6 @@
+@echo off
+echo 设置npm国内源为淘宝源...
+call npm config set registry https://registry.npmmirror.com/
+echo 正在导出简历为PDF和PNG...
+call npm run export
+pause

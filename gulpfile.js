@@ -19,6 +19,10 @@ gulp.task('serve', gulp.series('styles', function () {
         // 关闭右上角通知
         notify: false
     })
+    
+    // Watch for file changes
+    gulp.watch('src/**/*.css', gulp.series('styles'))
+    gulp.watch('src/**/*.html', gulp.series(reload))
 }))
 
 gulp.task('watch', function() {
