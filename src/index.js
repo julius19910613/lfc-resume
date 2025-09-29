@@ -1,7 +1,11 @@
-// Import styles
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import './style.css';
+import Resume from './components/Resume';
 
-// This file serves as the entry point for webpack
-console.log('Resume application loaded');
-
-// You can add any JavaScript functionality here if needed in the future
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <Resume />
+  </React.StrictMode>
+);
