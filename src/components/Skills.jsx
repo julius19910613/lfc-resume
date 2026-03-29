@@ -5,15 +5,11 @@ const Skills = () => {
   const { getSkills } = useResumeData();
 
   return (
-    <div className="area">
-      <h2>专业技能</h2>
-      <div className="skills-grid">
-        {getSkills.map((skillRow, rowIndex) => (
-          <div key={rowIndex} className="skill-row">
-            {skillRow.map((skill, colIndex) => (
-              <div key={colIndex} className="skill-item">{skill}</div>
-            ))}
-          </div>
+    <div className="sidebar-section">
+      <h3 className="sidebar-section-title">专业技能</h3>
+      <div className="skills-list">
+        {getSkills.flat().map((skill, index) => (
+          <span key={index} className="skill-tag">{skill.replace('• ', '')}</span>
         ))}
       </div>
     </div>

@@ -5,19 +5,15 @@ const Education = () => {
   const { getEducation } = useResumeData();
 
   return (
-    <div className="area">
-      <h2>教育经历</h2>
-      <table className="education-table">
-        <tbody>
-          {getEducation.map((edu, index) => (
-            <tr key={index}>
-              <td>{edu.school}</td>
-              <td>{edu.degree}</td>
-              <td>{edu.period}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="sidebar-section">
+      <h3 className="sidebar-section-title">教育经历</h3>
+      {getEducation.map((edu, index) => (
+        <div key={index} className="education-item">
+          <div className="education-school">{edu.school}</div>
+          <div className="education-degree">{edu.degree}</div>
+          <div className="education-period">{edu.period}</div>
+        </div>
+      ))}
     </div>
   );
 };
