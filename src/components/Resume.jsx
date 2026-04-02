@@ -1,22 +1,109 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './Header';
+import Summary from './Summary';
 import Education from './Education';
 import Skills from './Skills';
 import Experience from './Experience';
 import Projects from './Projects';
+import Achievements from './Achievements';
+import useResumeData, { ResumeDataProvider } from '../hooks/useResumeData';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import ResumePDF from '../pdf/ResumePDF';
 
 const Resume = () => {
   return (
-    <div className="content">
-      <aside className="sidebar">
-        <Header />
-        <Skills />
-        <Education />
-      </aside>
-      <main className="main">
-        <Experience />
-        <Projects />
-      </main>
+    <ResumeDataProvider>
+      <ResumeInner />
+    </ResumeDataProvider>
+  );
+};
+
+const ResumeInner = () => {
+  const { lang, setLang, getUi, editing, setEditing, data, resetData } = useResumeData();
+  const [pdfLang, setPdfLang] = useState(null);
+
+  const handlePdfClick = (targetLang) => {
+    setPdfLang(targetLang);
+    setTimeout(() => setPdfLang(null), 3000);
+  };
+
+  return (
+    <div className="page-wrapper">
+      <div className="toolbar">
+        <div className="toolbar-left">
+          <button
+            type="button"
+            className={`toolbar-btn ${editing ? 'active' : ''}`}
+            onClick={() => setEditing(!editing)}
+          >
+            {editing ? '预览' : '编辑'}
+          </button>
+          <div className="lang-switch" role="group" aria-label="Language switch">
+            <button
+              type="button"
+              className={`lang-btn ${lang === 'zh' ? 'active' : ''}`}
+              onClick={() => setLang('zh')}
+            >
+              {getUi.langSwitch?.zh ?? '中文'}
+            </button>
+            <button
+              type="button"
+              className={`lang-btn ${lang === 'en' ? 'active' : ''}`}
+              onClick={() => setLang('en')}
+            >
+              {getUi.langSwitch?.en ?? 'EN'}
+            </button>
+          </div>
+        </div>
+        <div className="toolbar-right">
+          {editing && (
+            <button type="button" className="toolbar-btn reset-btn" onClick={resetData}>
+              重置
+            </button>
+          )}
+          <div className="pdf-buttons">
+            {pdfLang === 'zh' ? (
+              <PDFDownloadLink
+                document={<ResumePDF data={data} lang="zh" />}
+                fileName="李繁宸_简历.pdf"
+                className="toolbar-btn pdf-btn"
+              >
+                {({ loading }) => loading ? '生成中...' : '下载中文PDF'}
+              </PDFDownloadLink>
+            ) : (
+              <button type="button" className="toolbar-btn pdf-btn" onClick={() => handlePdfClick('zh')}>
+                下载中文PDF
+              </button>
+            )}
+            {pdfLang === 'en' ? (
+              <PDFDownloadLink
+                document={<ResumePDF data={data} lang="en" />}
+                fileName="FanchenLi_Resume.pdf"
+                className="toolbar-btn pdf-btn"
+              >
+                {({ loading }) => loading ? 'Generating...' : 'Download EN PDF'}
+              </PDFDownloadLink>
+            ) : (
+              <button type="button" className="toolbar-btn pdf-btn" onClick={() => handlePdfClick('en')}>
+                Download EN PDF
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="content">
+        <aside className="sidebar">
+          <Header />
+          <Summary />
+          <Skills />
+          <Education />
+        </aside>
+        <main className="main">
+          <Experience />
+          <Projects />
+          <Achievements />
+        </main>
+      </div>
     </div>
   );
 };

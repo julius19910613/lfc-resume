@@ -1,144 +1,295 @@
-// 简历数据模型
 const resumeData = {
-  // 个人信息
-  personalInfo: {
-    name: "李繁宸",
-    birthDate: "1991.06.13",
-    phone: "13641875733",
-    email: "lifanchenjulius@hotmail.com"
+  zh: {
+    ui: {
+      langSwitch: { zh: "中文", en: "EN" },
+      contactTitle: "联系方式",
+      phoneLabel: "电话",
+      emailLabel: "邮箱",
+      summaryTitle: "个人优势",
+      skillsTitle: "专业技能",
+      educationTitle: "教育经历",
+      experienceTitle: "工作经历",
+      projectsTitle: "项目经历",
+      painPointsTitle: "现有痛点",
+      solutionsTitle: "解决过程",
+      resultsTitle: "项目成果",
+      achievementsTitle: "业绩"
+    },
+    personalInfo: {
+      name: "李繁宸",
+      title: "全栈工程师 / AI 应用开发",
+      phone: "13641875733",
+      email: "lifanchenjulius@hotmail.com",
+      location: "上海"
+    },
+    summary: [
+      "全栈开发 + AI 应用开发能力，熟悉 Python、React、Vue，了解 Java。",
+      "对智能体开发与知识图谱开发有较多项目经验。",
+      "熟悉 CI/CD 流程，了解 Kubernetes、Docker。",
+      "具备团队/项目管理能力，管理过 5 人以上团队；有产品设计与运营经验。"
+    ],
+    skills: [
+      ["Python", "FastAPI", "JavaScript (ES6+)", "TypeScript"],
+      ["React", "Vue", "ECharts", "AntV G6"],
+      ["Neo4j", "MongoDB", "GraphQL", "DuckDB"],
+      ["Airflow", "Docker", "Kubernetes", "CI/CD"]
+    ],
+    education: [
+      { school: "纽卡斯尔大学（英国）", degree: "计算机科学 硕士", period: "2013 - 2015" },
+      { school: "中瑞典大学", degree: "信息技术 本科（交换）", period: "2012 - 2013" },
+      { school: "东华大学", degree: "软件工程 本科", period: "2009 - 2013" }
+    ],
+    experience: [
+      {
+        company: "特斯拉（上海）有限公司",
+        position: "全栈工程师",
+        period: "2021.12 - 至今",
+        responsibilities: [
+          "负责公司内部数据分析/可视化平台与生产制造 AI 助手相关能力建设。",
+          "参与基于 LLM + 知识图谱的智能体应用研发，提升现场问题分析与数据获取效率。"
+        ]
+      },
+      {
+        company: "上海亿锦网络科技有限公司",
+        position: "Web 前端",
+        period: "2021.04 - 2021.12",
+        responsibilities: ["参与交易系统开发工作。"]
+      },
+      {
+        company: "竹间智能科技（上海）有限公司",
+        position: "前端开发经理 / 前端开发工程师",
+        period: "2018.06 - 2021.04",
+        responsibilities: [
+          "推动前端团队技术改造，基于 ElementUI 的公共组件体系提升交付效率。",
+          "推动前端页面性能优化，剔除冗余依赖，合并/优化阻塞请求。",
+          "推动前端解耦改造，从多页面逐步切换至微前端架构。"
+        ]
+      },
+      {
+        company: "SAP",
+        position: "Web 前端",
+        period: "2015.10 - 2018.06",
+        responsibilities: [
+          "基于 Fiori（JavaScript + HTML5）开发资金管理工具前端界面（列表/图表/表单）。",
+          "参与自动化测试与后台服务模块开发，保障质量并支持客户交付。"
+        ]
+      },
+      {
+        company: "携程（Trip.com）",
+        position: "开发工程师",
+        period: "2014.10 - 2015.10",
+        responsibilities: [
+          "从订单池抓取订单并按状态自动化处理（提示、支付、联系确认等）。",
+          "设计并开发订单备份还原与酒店间夜量统计功能模块。",
+          "参与订单处理系统重构与优化，降低 DB 压力并缩短响应时间。"
+        ]
+      }
+    ],
+    projects: [
+      {
+        name: "公司内部可视化报表平台",
+        role: "全栈开发",
+        period: "Tesla | 2021.12 - 至今",
+        painPoints: ["数据源分散、报表需求多样，用户需要自助配置与可视化展示能力。"],
+        solutions: [
+          "基于 ECharts + AntV G6 构建图表能力，支持缩放、下载导出等交互。",
+          "提供 ReactJS + FastAPI 配置化界面，支持数据源链接、报表数据与展示形式配置。",
+          "二次开发 Superset 组件，接入多种数据源（MySQL/SQL Server/Trino/Vertica）与在线文档（SharePoint）。",
+          "基于 DuckDB + Airflow Job 提供跨库 Join、查询结果预缓存等轻量分析能力。",
+          "支持通过邮件、IM 消息推送报表结果。"
+        ],
+        results: "沉淀可复用报表与数据接入能力，提升业务自助分析效率。"
+      },
+      {
+        name: "生产制造溯源平台",
+        role: "全栈开发",
+        period: "Tesla | 2021.12 - 至今",
+        painPoints: ["生产制造数据定义混乱，跨车间/场景数据获取成本高。"],
+        solutions: [
+          "使用 Neo4j（图数据库）+ MongoDB（NoSQL）构建混合存储。",
+          "构建元数据管理模块，维护查询条件与表/字段映射关系。",
+          "基于 LLM 构建查询计划生成模块，按元数据选择单步/多步最优查询策略。",
+          "基于 FastAPI + ReactJS 开发数据服务平台，执行查询计划并返回结果。",
+          "基于 GraphQL 提供统一查询接口，便于不同平台系统调用。"
+        ],
+        results: "降低跨系统取数与溯源成本，为多业务系统提供统一数据服务入口。"
+      },
+      {
+        name: "生产制造现场问题辅助助手",
+        role: "AI 应用 / 智能体",
+        period: "Tesla | 2021.12 - 至今",
+        painPoints: ["现场问题规整与查询困难，夜班期间大量问题需要工程师介入。"],
+        solutions: [
+          "基于 Neo4j 设计制造问题知识图谱并存储数据。",
+          "结合 LLM + 知识图谱范式抽取问题核心知识，并以图结构保存。",
+          "将自然语言查询转化为单步/多步图查询，输出对应解决方法。",
+          "整合知识查询与数据查询为辅助智能体，LLM 自动选择工具并生成最终方案。"
+        ],
+        results: "显著提升现场技术人员分析与解决问题效率。"
+      },
+      {
+        name: "公司数据分析与可视化助手",
+        role: "AI 应用 / 智能体",
+        period: "Tesla | 2021.12 - 至今",
+        painPoints: ["数据查询与分析门槛高，用户需要更自然的交互方式完成探索与可视化。"],
+        solutions: [
+          "将内部分析与可视化平台能力拆分并封装为智能体工具。",
+          "参与开发元数据查询助手：解析用户输入并返回相关元数据，帮助快速定位数据。",
+          "参与开发数据可视化助手：选择授权数据源、生成查询并可视化展示结果。",
+          "参与开发数据分析助手：结合查询结果与私有知识库生成可执行分析成果。"
+        ],
+        results: "提升用户自助完成数据查询、可视化与分析的能力。"
+      }
+    ],
+    achievements: [
+      "生产制造辅助助手：现场反馈夜班期间约 70% 原先需联系值班工程师的问题可由现场技术人员独立分析解决。",
+      "数据分析与可视化助手：提升用户独立完成数据查询和分析能力，日均使用量 200+。",
+      "生产制造溯源平台：日均使用量 200+；估算每年可节约质量和工艺工程师约 2000 小时工作时间。"
+    ]
   },
-
-  // 教育经历
-  education: [
-    {
-      school: "纽卡斯尔大学",
-      degree: "计算机科学（硕士）",
-      period: "2013:09 - 2015.01"
+  en: {
+    ui: {
+      langSwitch: { zh: "中文", en: "EN" },
+      contactTitle: "Contact",
+      phoneLabel: "Phone",
+      emailLabel: "Email",
+      summaryTitle: "Summary",
+      skillsTitle: "Skills",
+      educationTitle: "Education",
+      experienceTitle: "Experience",
+      projectsTitle: "Projects",
+      painPointsTitle: "Context",
+      solutionsTitle: "Highlights",
+      resultsTitle: "Outcome",
+      achievementsTitle: "Achievements"
     },
-    {
-      school: "中瑞典大学",
-      degree: "信息科学（学士）",
-      period: "2012:09 - 2013.06"
+    personalInfo: {
+      name: "Fanchen Li",
+      title: "Full-Stack Engineer / AI Applications",
+      phone: "+86 13641875733",
+      email: "lifanchenjulius@hotmail.com",
+      location: "Shanghai, China"
     },
-    {
-      school: "东华大学",
-      degree: "软件工程（学士）",
-      period: "2009:09 - 2013.06"
-    }
-  ],
-
-  // 专业技能
-  skills: [
-    ["• 熟悉 VueJS", "• 了解 ReactJS"],
-    ["• 熟悉 JavaScript ES6语法", "• 熟悉前端工程化"],
-    ["• 了解 CSS3", "• 熟悉敏捷开发"]
-  ],
-
-  // 工作经历
-  experience: [
-    {
-      company: "Bybit",
-      position: "前端开发工程师",
-      period: "2021.03 - 至今",
-      responsibilities: [
-        "支持公司业务推进。完成法币入金业务 0-1 落地。",
-        "支持公司技术栈更新，参与公司旧有项目从vue迁移到react开发",
-        "参与公司前端工程化建设，参与公司前端工程脚手架开发"
-      ]
-    },
-    {
-      company: "竹间智能",
-      position: "前端开发工程师 & 前端组长",
-      period: "2018.06 - 2021.03",
-      responsibilities: [
-        "支持公司业务推进。完成包括机器人平台，电话机器人，NLU 平台，语音平台等多个旧有产品的有序迭代。协助知识工程，智能知识库，知识图谱等新产品 0-1 落地。",
-        "主导公司前端开发流程统一与优化，推出前端开发统一规范并以公共组件库与公共脚手架的形式落地。主导公司前端模块业务整合与公司前端产品性能优化。",
-        "建设专业前端团队，强调团队成员思辨能力，鼓励对潜在业务需求和技术优化点进行自我规划和递进式解决。参与跨团队沟通协调，开展团队技术分享等工作。"
-      ]
-    },
-    {
-      company: "思爱普中国",
-      position: "开发工程师",
-      period: "2015.10 - 2018.06",
-      responsibilities: [
-        "基于业务场景，完成资金管理工具前端操作界面开发工作。保证产品按时迭代"
-      ]
-    },
-    {
-      company: "携程",
-      position: "开发工程师",
-      period: "2014.10 - 2015.10",
-      responsibilities: [
-        "基于酒店后台业务场景，开发并完成酒店预定后端流程操作",
-        "完成酒店历史数据归集，预定信息发送，异常数据补偿等业务操作。"
-      ]
-    }
-  ],
-
-  // 项目经历
-  projects: [
-    {
-      name: "法币入金2.0",
-      role: "开发者&管理者",
-      period: "2021.03 - 至今",
-      painPoints: [
-        "旧有项目交互逻辑设计不合理，用户反馈不佳",
-        "旧有项目代码结构复杂，难以维护"
-      ],
-      solutions: [
-        "拆分旧有代码，提取法币入金相关逻辑基于react重构",
-        "基于Antd封装组件，快速迭代页面，与交互讨论封装完成的组件标准化为组件库",
-        "抽离公共方法（防抖，节流，轮询等）为公共方法，降低后续相似功能的开发成本"
-      ],
-      results: "开发两周后完成上线，PV，UV提升30%，用户反馈问题下降30%"
-    },
-    {
-      name: "Common Modules",
-      role: "开发者&管理者",
-      period: "2019.12 - 2021.03",
-      painPoints: [
-        "公司旧有的前端技术栈包括 VueJS，JQuery 和 PHP，VueJS 项目存在不同种类组件库混用情况。",
-        "前端开发水平参差不齐。产品设计，交互设计，前端开发缺乏统一设计基准和开发标准，需求传递时间长。",
-        "公司产品迭代周期短，要求快速产出交互统一产品，快速达到可 demo 可投入市场"
-      ],
-      solutions: [
-        "统一前端技术栈至 VueJS，基础组件库选择 ElementUI，统一基础功能交互，基于 ElementUI和自定义样式实现基础功能样式的统一化",
-        "基于 ElementUI，结合公司业务场景，与交互，产品交流后封装与业务流程相关的业务公共组件。如页面头部，侧边菜单栏，卡片页，侧边弹出框等。部分业务公共组件由多个业务公共组件组成且支持单独使用，开发可选择直接使用完整的业务组件直接搭建页面，也支持自由搭配业务组件形成新页面",
-        "封装完成的公共组件支持 npm 依赖形式和基于 nginx webserver 的访问两种形式，nginx webserver 支持多产品部署和开发时，不用关注公共部分是否有版本差异或版本升级。Nginx依赖形式使得某些单独运行产品可以快速集成公共组件能力",
-        "引入基于 storybook 的前端自动化测试，保证公共组件开发质量"
-      ],
-      results: "Common modules 推出第一个版本后在两周之内帮助公司 12 个主产品，20+功能模块完成交互和展示初步统一。近一年持续迭代近 20 个业务相关组件。提升新产品开发效率和旧有功能维护效率 30%左右"
-    },
-    {
-      name: "前端整合改造",
-      role: "开发者&管理者",
-      period: "2019.12 - 2021.03",
-      painPoints: [
-        "公司产品独立开发，独立部署，需要展示融合版本或客户使用多个产品时，产品之间关系零碎，界面体感分散",
-        "公司前端技术栈尚未统一，要求短时间内完成整合，业务上需要产品支持独立部署和按业务需求整合"
-      ],
-      solutions: [
-        "第⼀阶段（2019.12 – 2020.1）为了快速串接业务，达到整合效果。选⽤基于 nginx rewrite 的多⻚应⽤模式。即每个功能模块都统⼀复⽤公共业务组件（头部，侧边菜单栏等）菜单跳转时通过恰当缓存共享信息，从体感上给予⽤户接近⽆感切换的效果。",
-        "第⼆阶段（2020.5 – ⾄今）经过⼀段时间的技术调研，完成前置的技术储备和业务调整准备后，使⽤ qiankun 微前端框架来实现前端业务模块有机整合。"
-      ],
-      results: "整合⽅案第⼀阶段完成后近⼀年完成⽀撑产品客户部署需求和演⽰需求，qiankun ⽅案在部分产品中实践得到使⽤者和开发者的认可，正在全公司铺开推⼴"
-    },
-    {
-      name: "前端性能优化",
-      role: "开发者&管理者",
-      period: "2019.12 – 2021.03",
-      painPoints: [
-        "无缓存情况下 FCP 时间， Speed Index 时间均在 10 秒以上，白屏现象明显。用户体验不好，达不到演示标准"
-      ],
-      solutions: [
-        "制定性能优化指标，FCP 时间及 Speed Index 时间压缩⾄ chrome 推荐的 moderate⽔平（FCP 时间 2~4s，Speed Index 4s 左右）",
-        "结合浏览器访问数据指标和 webpack 打包结果，定位单⽂件过⼤问题，⼀⽅⾯启⽤Vue-router 资源异步加载和 Vue 组件异步加载，⽀持打包后形成多⽂件。另⼀⽅⾯清理，剔除不需要的静态资源，开启 gzip 压缩，压缩单个⽂件⼤⼩",
-        "基于浏览器访请求访问情况，与后端⼀同 review 相关逻辑，合并重复功能逻辑，去除非关联逻辑之间的依赖，⻚⾯开启时的请求数由原先的 20+缩减为 5 个",
-        "与测试部⻔分享性能检测流程，推荐其将性能测试加入迭代测试范围"
-      ],
-      results: "⻚⾯ FCP 时间及 Speed Index 时间降低⾄ 3s 以下，平均 2s 左右，性能检测纳入测试检测项，⼤版本迭代必须通过，定期开展打包结果 review，单个⼤⽂件发现后会统⼀分析确认是否合适"
-    }
-  ]
+    summary: [
+      "Full-stack engineer with hands-on experience building AI agents and knowledge-graph-powered applications.",
+      "Strong with Python, React, and Vue; familiar with Java; experienced in CI/CD and containerized delivery.",
+      "Built internal analytics/visualization platforms and manufacturing AI assistants with measurable impact."
+    ],
+    skills: [
+      ["Python", "FastAPI", "JavaScript (ES6+)", "TypeScript"],
+      ["React", "Vue", "ECharts", "AntV G6"],
+      ["Neo4j", "MongoDB", "GraphQL", "DuckDB"],
+      ["Airflow", "Docker", "Kubernetes", "CI/CD"]
+    ],
+    education: [
+      { school: "Newcastle University, UK", degree: "MSc Computer Science", period: "2013 – 2015" },
+      { school: "Mid Sweden University, Sweden", degree: "BSc Information Technology", period: "2012 – 2013" },
+      { school: "Donghua University, China", degree: "BSc Software Engineering", period: "2009 – 2013" }
+    ],
+    experience: [
+      {
+        company: "Tesla (Shanghai) Co., Ltd.",
+        position: "Full-Stack Engineer & Product Owner",
+        period: "Dec 2021 – Present",
+        responsibilities: [
+          "Built AI-agent and knowledge-graph solutions for manufacturing problem solving and data discovery.",
+          "Developed internal analytics and visualization capabilities to enable self-service reporting and insights."
+        ]
+      },
+      {
+        company: "Shanghai Yijin Network Technology Co., Ltd.",
+        position: "Web Front-End Developer",
+        period: "Apr 2021 – Dec 2021",
+        responsibilities: ["Participated in the development of trading systems."]
+      },
+      {
+        company: "Emotibot Technologies (Shanghai) Co., Ltd.",
+        position: "Front-End Development Manager / Front-End Engineer",
+        period: "Jun 2018 – Apr 2021",
+        responsibilities: [
+          "Led front-end technical transformation with ElementUI-based reusable components.",
+          "Optimized performance by removing redundant dependencies and minimizing blocking requests.",
+          "Promoted decoupling: migrated from multi-page apps to a micro-frontend architecture."
+        ]
+      },
+      {
+        company: "SAP",
+        position: "Web Front-End Developer",
+        period: "Oct 2015 – Jun 2018",
+        responsibilities: [
+          "Developed financial data management tools using Fiori (JavaScript + HTML5).",
+          "Built UI layouts for queries, charts, and forms; designed automated testing for both front-end and back-end services."
+        ]
+      },
+      {
+        company: "Ctrip (Trip.com)",
+        position: "Software Engineer",
+        period: "Oct 2014 – Oct 2015",
+        responsibilities: [
+          "Automated order pool processing (payment, confirmation, alerts).",
+          "Designed order backup & restore system and a hotel night-stay statistics module.",
+          "Improved order system performance, optimized DB load and reduced latency."
+        ]
+      }
+    ],
+    projects: [
+      {
+        name: "Manufacturing Problem-Solving AI Agent",
+        role: "AI Agent / Knowledge Graph",
+        period: "Tesla | Dec 2021 – Present",
+        painPoints: ["On-site issues required experts; solutions were hard to retrieve and reuse consistently."],
+        solutions: [
+          "Designed a knowledge graph (Neo4j) to structure and store manufacturing problem data.",
+          "Extracted core knowledge from issues using a paradigm combining LLMs and knowledge graphs.",
+          "Converted natural language queries into single-step or multi-step graph queries to find solutions.",
+          "Integrated knowledge and data queries into an assistant that lets LLMs select tools and provide final answers."
+        ],
+        results: "Improved on-site troubleshooting efficiency and reduced reliance on on-call engineers."
+      },
+      {
+        name: "Company Data Analytics & Visualization AI Agent",
+        role: "AI Agent Tooling",
+        period: "Tesla | Dec 2021 – Present",
+        painPoints: ["Data discovery and analysis were difficult for non-technical users."],
+        solutions: [
+          "Modularized internal analytics and visualization capabilities into agent tools.",
+          "Co-developed a metadata query agent to interpret user input and retrieve relevant metadata.",
+          "Co-developed a visualization agent to generate queries, retrieve authorized data, and visualize results.",
+          "Co-developed a data analysis agent combining retrieved data with private knowledge bases to generate insights."
+        ],
+        results: "Enabled self-service data querying, visualization, and analysis."
+      },
+      {
+        name: "Manufacturing Traceability Platform",
+        role: "Full-Stack Development",
+        period: "Tesla | Dec 2021 – Present",
+        painPoints: ["Inconsistent data definitions and high cross-workshop data retrieval cost."],
+        solutions: [
+          "Designed a hybrid storage system using Neo4j + MongoDB.",
+          "Built a data service platform with FastAPI + ReactJS, converting user inputs into optimized query strategies.",
+          "Provided unified access via GraphQL for downstream business systems."
+        ],
+        results: "Reduced data retrieval cost and improved traceability across scenarios."
+      },
+      {
+        name: "Data Visualization Platform",
+        role: "Full-Stack Development",
+        period: "Tesla | Dec 2021 – Present",
+        painPoints: ["Teams needed interactive dashboards and configurable reports across heterogeneous data sources."],
+        solutions: [
+          "Designed and developed a platform based on FastAPI and ReactJS.",
+          "Used ECharts and AntV to build interactive visualization components.",
+          "Supported report push via email and IM messages."
+        ],
+        results: "Improved accessibility of analytics and reporting for internal stakeholders."
+      }
+    ],
+    achievements: [
+      "Manufacturing Problem-Solving Agent: During night shifts, ~70% of issues previously requiring on-call engineers could be resolved by technicians independently.",
+      "Data Analytics & Visualization Agent: 200+ average daily active users; improved users’ ability to query and analyze data independently.",
+      "Manufacturing Traceability Platform: 200+ average daily active users; estimated 2,000 engineering hours saved annually for quality and process engineers."
+    ]
+  }
 };
 
 export default resumeData;

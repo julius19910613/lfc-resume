@@ -25,3 +25,10 @@ dist/
 # OS files
 .DS_Store
 Thumbs.db
+nul
+
+# Claude Code
+.claude/
+
+# Font files (too large for git)
+public/fonts/*.ttf

@@ -1,83 +1,201 @@
-import { useState, useMemo } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import resumeData from '../data/resumeData';
 
-// 自定义Hook：管理简历数据
+const STORAGE_KEY = 'lfc-resume-data';
+
+const loadFromStorage = () => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : null;
+  } catch {
+    return null;
+  }
+};
+
+const saveToStorage = (data) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch { }
+};
+
+const ResumeDataContext = createContext(null);
+
+export const ResumeDataProvider = ({ children }) => {
+  const [lang, setLang] = useState('zh');
+  const [data, setData] = useState(() => loadFromStorage() || resumeData);
+  const [editing, setEditing] = useState(false);
+
+  useEffect(() => {
+    saveToStorage(data);
+  }, [data]);
+
+  const value = useMemo(() => {
+    const current = data?.[lang] ?? data?.zh ?? {};
+
+    return {
+      lang,
+      setLang,
+      data,
+      setData,
+      editing,
+      setEditing,
+
+      ui: current.ui ?? {},
+      personalInfo: current.personalInfo ?? {},
+      summary: current.summary ?? [],
+      skills: current.skills ?? [],
+      education: current.education ?? [],
+      experience: current.experience ?? [],
+      projects: current.projects ?? [],
+      achievements: current.achievements ?? []
+    };
+  }, [data, lang, editing]);
+
+  return (
+    <ResumeDataContext.Provider value={value}>
+      {children}
+    </ResumeDataContext.Provider>
+  );
+};
+
 const useResumeData = () => {
-  const [data, setData] = useState(resumeData);
+  const ctx = useContext(ResumeDataContext);
+  if (!ctx) {
+    throw new Error('useResumeData must be used within ResumeDataProvider');
+  }
 
-  // 获取所有简历数据
-  const getResumeData = useMemo(() => data, [data]);
+  const updateField = useCallback((section, path, value) => {
+    ctx.setData(prev => {
+      const langData = { ...(prev[ctx.lang] ?? {}) };
+      if (path === null) {
+        langData[section] = value;
+      } else if (typeof path === 'number') {
+        const arr = [...(langData[section] || [])];
+        arr[path] = value;
+        langData[section] = arr;
+      } else {
+        const parts = path.split('.');
+        let target = langData[section];
+        if (!target) {
+          langData[section] = {};
+          target = langData[section];
+        }
+        const last = parts.pop();
+        for (const p of parts) {
+          target[p] = { ...(target[p] || {}) };
+          target = target[p];
+        }
+        target[last] = value;
+      }
+      return { ...prev, [ctx.lang]: langData };
+    });
+  }, [ctx.lang]);
 
-  // 获取个人信息
-  const getPersonalInfo = useMemo(() => data.personalInfo, [data.personalInfo]);
+  const updatePersonalInfo = useCallback((field, value) => {
+    ctx.setData(prev => {
+      const langData = { ...(prev[ctx.lang] ?? {}) };
+      langData.personalInfo = { ...(langData.personalInfo ?? {}), [field]: value };
+      return { ...prev, [ctx.lang]: langData };
+    });
+  }, [ctx.lang]);
 
-  // 获取教育经历
-  const getEducation = useMemo(() => data.education, [data.education]);
+  const updateArrayItem = useCallback((section, index, field, value) => {
+    ctx.setData(prev => {
+      const langData = { ...(prev[ctx.lang] ?? {}) };
+      const arr = [...(langData[section] || [])];
+      if (typeof field === 'string' && field !== '') {
+        arr[index] = { ...(arr[index] || {}), [field]: value };
+      } else {
+        arr[index] = value;
+      }
+      langData[section] = arr;
+      return { ...prev, [ctx.lang]: langData };
+    });
+  }, [ctx.lang]);
 
-  // 获取专业技能
-  const getSkills = useMemo(() => data.skills, [data.skills]);
+  const updateNestedArrayItem = useCallback((section, index, subField, subIndex, value) => {
+    ctx.setData(prev => {
+      const langData = { ...(prev[ctx.lang] ?? {}) };
+      const arr = [...(langData[section] || [])];
+      const item = { ...(arr[index] || {}) };
+      const subArr = [...(item[subField] || [])];
+      subArr[subIndex] = value;
+      item[subField] = subArr;
+      arr[index] = item;
+      langData[section] = arr;
+      return { ...prev, [ctx.lang]: langData };
+    });
+  }, [ctx.lang]);
 
-  // 获取工作经历
-  const getExperience = useMemo(() => data.experience, [data.experience]);
+  const addItem = useCallback((section, template = {}) => {
+    ctx.setData(prev => {
+      const langData = { ...(prev[ctx.lang] ?? {}) };
+      langData[section] = [...(langData[section] || []), template];
+      return { ...prev, [ctx.lang]: langData };
+    });
+  }, [ctx.lang]);
 
-  // 获取项目经历
-  const getProjects = useMemo(() => data.projects, [data.projects]);
+  const removeItem = useCallback((section, index) => {
+    ctx.setData(prev => {
+      const langData = { ...(prev[ctx.lang] ?? {}) };
+      const arr = [...(langData[section] || [])];
+      arr.splice(index, 1);
+      langData[section] = arr;
+      return { ...prev, [ctx.lang]: langData };
+    });
+  }, [ctx.lang]);
 
-  // 更新个人信息（如果需要）
-  const updatePersonalInfo = (newInfo) => {
-    setData(prevData => ({
-      ...prevData,
-      personalInfo: { ...prevData.personalInfo, ...newInfo }
-    }));
-  };
+  const addSkillTag = useCallback((groupIndex, tag) => {
+    ctx.setData(prev => {
+      const langData = { ...(prev[ctx.lang] ?? {}) };
+      const skills = [...(langData.skills || [])];
+      skills[groupIndex] = [...(skills[groupIndex] || []), tag];
+      langData.skills = skills;
+      return { ...prev, [ctx.lang]: langData };
+    });
+  }, [ctx.lang]);
 
-  // 更新教育经历（如果需要）
-  const updateEducation = (newEducation) => {
-    setData(prevData => ({
-      ...prevData,
-      education: newEducation
-    }));
-  };
+  const removeSkillTag = useCallback((groupIndex, tagIndex) => {
+    ctx.setData(prev => {
+      const langData = { ...(prev[ctx.lang] ?? {}) };
+      const skills = [...(langData.skills || [])];
+      skills[groupIndex] = [...(skills[groupIndex] || [])];
+      skills[groupIndex].splice(tagIndex, 1);
+      langData.skills = skills;
+      return { ...prev, [ctx.lang]: langData };
+    });
+  }, [ctx.lang]);
 
-  // 更新专业技能（如果需要）
-  const updateSkills = (newSkills) => {
-    setData(prevData => ({
-      ...prevData,
-      skills: newSkills
-    }));
-  };
-
-  // 更新工作经历（如果需要）
-  const updateExperience = (newExperience) => {
-    setData(prevData => ({
-      ...prevData,
-      experience: newExperience
-    }));
-  };
-
-  // 更新项目经历（如果需要）
-  const updateProjects = (newProjects) => {
-    setData(prevData => ({
-      ...prevData,
-      projects: newProjects
-    }));
-  };
+  const resetData = useCallback(() => {
+    ctx.setData(resumeData);
+    localStorage.removeItem(STORAGE_KEY);
+  }, []);
 
   return {
-    // 获取数据的方法
-    getResumeData,
-    getPersonalInfo,
-    getEducation,
-    getSkills,
-    getExperience,
-    getProjects,
-    
-    // 更新数据的方法
+    getResumeData: ctx,
+    getPersonalInfo: ctx.personalInfo,
+    getEducation: ctx.education,
+    getSkills: ctx.skills,
+    getExperience: ctx.experience,
+    getProjects: ctx.projects,
+    getSummary: ctx.summary,
+    getAchievements: ctx.achievements,
+    getUi: ctx.ui,
+    lang: ctx.lang,
+    setLang: ctx.setLang,
+    editing: ctx.editing,
+    setEditing: ctx.setEditing,
+    data: ctx.data,
+
+    updateField,
     updatePersonalInfo,
-    updateEducation,
-    updateSkills,
-    updateExperience,
-    updateProjects
+    updateArrayItem,
+    updateNestedArrayItem,
+    addItem,
+    removeItem,
+    addSkillTag,
+    removeSkillTag,
+    resetData,
   };
 };
 

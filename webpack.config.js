@@ -50,9 +50,14 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { 
-          from: 'src/assets', 
+        {
+          from: 'src/assets',
           to: 'assets',
+          noErrorOnMissing: true
+        },
+        {
+          from: 'public/fonts',
+          to: 'fonts',
           noErrorOnMissing: true
         },
       ],
@@ -60,11 +65,21 @@ module.exports = {
   ],
   resolve: {
     extensions: ['.js', '.jsx'],
+    fallback: {
+      fs: false,
+      path: false,
+      stream: false,
+      util: false,
+      zlib: false,
+      crypto: false,
+      buffer: false,
+    },
   },
   devServer: {
-    static: {
-      directory: path.join(__dirname, 'dist'),
-    },
+    static: [
+      { directory: path.join(__dirname, 'dist') },
+      { directory: path.join(__dirname, 'public') },
+    ],
     compress: true,
     port: 7000,
     hot: true,
