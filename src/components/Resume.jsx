@@ -7,8 +7,7 @@ import Experience from './Experience';
 import Projects from './Projects';
 import Achievements from './Achievements';
 import useResumeData, { ResumeDataProvider } from '../hooks/useResumeData';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import ResumePDF from '../pdf/ResumePDF';
+import { downloadResumePdf } from '../pdf/downloadResumePdf';
 
 const Resume = () => {
   return (
@@ -20,11 +19,23 @@ const Resume = () => {
 
 const ResumeInner = () => {
   const { lang, setLang, getUi, editing, setEditing, data, resetData } = useResumeData();
-  const [pdfLang, setPdfLang] = useState(null);
+  const [pdfLoadingLang, setPdfLoadingLang] = useState(null);
 
-  const handlePdfClick = (targetLang) => {
-    setPdfLang(targetLang);
-    setTimeout(() => setPdfLang(null), 3000);
+  const handlePdfDownload = async (targetLang) => {
+    if (pdfLoadingLang) {
+      return;
+    }
+
+    setPdfLoadingLang(targetLang);
+    try {
+      await downloadResumePdf({
+        data,
+        lang: targetLang,
+        fileName: targetLang === 'zh' ? '李繁宸_简历.pdf' : 'FanchenLi_Resume.pdf'
+      });
+    } finally {
+      setPdfLoadingLang(null);
+    }
   };
 
   return (
@@ -62,32 +73,22 @@ const ResumeInner = () => {
             </button>
           )}
           <div className="pdf-buttons">
-            {pdfLang === 'zh' ? (
-              <PDFDownloadLink
-                document={<ResumePDF data={data} lang="zh" />}
-                fileName="李繁宸_简历.pdf"
-                className="toolbar-btn pdf-btn"
-              >
-                {({ loading }) => loading ? '生成中...' : '下载中文PDF'}
-              </PDFDownloadLink>
-            ) : (
-              <button type="button" className="toolbar-btn pdf-btn" onClick={() => handlePdfClick('zh')}>
-                下载中文PDF
-              </button>
-            )}
-            {pdfLang === 'en' ? (
-              <PDFDownloadLink
-                document={<ResumePDF data={data} lang="en" />}
-                fileName="FanchenLi_Resume.pdf"
-                className="toolbar-btn pdf-btn"
-              >
-                {({ loading }) => loading ? 'Generating...' : 'Download EN PDF'}
-              </PDFDownloadLink>
-            ) : (
-              <button type="button" className="toolbar-btn pdf-btn" onClick={() => handlePdfClick('en')}>
-                Download EN PDF
-              </button>
-            )}
+            <button
+              type="button"
+              className="toolbar-btn pdf-btn"
+              onClick={() => handlePdfDownload('zh')}
+              disabled={Boolean(pdfLoadingLang)}
+            >
+              {pdfLoadingLang === 'zh' ? '生成中...' : '下载中文PDF'}
+            </button>
+            <button
+              type="button"
+              className="toolbar-btn pdf-btn"
+              onClick={() => handlePdfDownload('en')}
+              disabled={Boolean(pdfLoadingLang)}
+            >
+              {pdfLoadingLang === 'en' ? 'Generating...' : 'Download EN PDF'}
+            </button>
           </div>
         </div>
       </div>

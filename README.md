@@ -1,85 +1,125 @@
- # 李繁宸的简历 (LFC Resume)
+# LFC Resume
 
-一个简单的HTML简历项目，可以导出为PDF和PNG格式。
+[![Deploy to GitHub Pages](https://img.shields.io/badge/deploy-gh--pages-blue)](https://julius19910613.github.io/lfc-resume/)
+[![Vite](https://img.shields.io/badge/built%20with-Vite-646CFF)](https://vite.dev/)
+[![React](https://img.shields.io/badge/ui-React-61DAFB)](https://react.dev/)
 
-> **注意**：如果在 Windows 上遇到 PowerShell 执行策略限制问题，请查看 [解决PowerShell执行策略限制.md](./解决PowerShell执行策略限制.md) 文件，或直接使用提供的批处理文件（`.bat`）运行项目。
+一个基于 React + Vite 的在线简历项目，支持中英文切换、页面内编辑、浏览器本地持久化，以及按需动态加载的 PDF 下载能力。
 
-## 功能特点
+## Live Demo
 
-- 响应式HTML/CSS简历设计
-- 开发服务器自动刷新
-- 一键导出为PDF和PNG格式
-- 简洁的构建流程
+- GitHub Pages: [https://julius19910613.github.io/lfc-resume/](https://julius19910613.github.io/lfc-resume/)
 
-## 安装
+## Features
 
-确保已安装Node.js，然后运行：
+- A4 版式简历页面，适配屏幕浏览与打印导出
+- 中英文简历数据切换
+- 在线编辑简历内容，并自动保存到 `localStorage`
+- 一键重置到默认数据
+- PDF 下载按需加载（减少首屏包体积）
+- `npm run export` 提供本地导出辅助流程（PDF/PNG）
+
+## Tech Stack
+
+- React 18
+- Vite 7
+- `@react-pdf/renderer`（懒加载）
+- Express（本地导出辅助服务）
+- gh-pages（GitHub Pages 发布）
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm 9+
+
+### Install
 
 ```bash
 npm install
 ```
 
-## 使用方法
-
-### 在 Windows 上使用批处理文件（推荐）
-
-如果你在 Windows 上遇到 PowerShell 执行策略限制，可以直接使用提供的批处理文件：
-
-1. 双击 `install.bat` 安装依赖
-2. 双击 `dev.bat` 启动开发服务器
-3. 双击 `export.bat` 导出简历为 PDF 和 PNG
-
-### 使用 npm 命令
-
-#### 开发模式
-
-启动开发服务器，支持热重载：
+### Run in Development
 
 ```bash
 npm run dev
 ```
 
-然后在浏览器中访问 http://localhost:7000
+默认地址：`http://localhost:7000`
 
-#### 导出简历
+### Production Build
 
-一键生成PDF和PNG格式的简历：
+```bash
+npm run build
+```
+
+### Preview Build Locally
+
+```bash
+npm run preview
+```
+
+## Export Resume (PDF/PNG)
 
 ```bash
 npm run export
 ```
 
-生成的文件将保存在 `dist` 目录中：
-- `dist/jianli.pdf` - PDF格式简历
-- `dist/jianli.png` - PNG格式简历
+该命令会先构建项目，再启动本地导出服务并打开浏览器。按照终端提示进行：
 
-## 自定义配置
+1. 使用浏览器打印为 PDF（保存到 `dist/jianli.pdf`）
+2. 截图保存 PNG（保存到 `dist/jianli.png`）
 
-编辑 `config.js` 文件可以修改：
-- 开发服务器端口
-- 输出文件路径和名称
+## Deploy to GitHub Pages
 
-## 项目结构
+本项目采用 `gh-pages` 分支发布静态资源。
 
+```bash
+npm run deploy
 ```
+
+部署前会自动执行 `npm run build`，构建输出目录为 `dist`。
+
+> 若仓库名变更，请同步更新 `vite.config.js` 中的 `base` 配置。
+
+## Project Structure
+
+```text
 lfc-resume/
-├── src/                        # 源文件
-│   ├── index.html              # 简历HTML
-│   └── style.css               # 样式表
-├── dist/                       # 生成的PDF和PNG文件
-├── build.js                    # PDF/PNG生成脚本
-├── build-resume.js             # 一键构建脚本
-├── config.js                   # 项目配置
-├── gulpfile.js                 # Gulp任务
-├── install.bat                 # 安装依赖的批处理文件
-├── dev.bat                     # 启动开发服务器的批处理文件
-├── export.bat                  # 导出简历的批处理文件
-└── 解决PowerShell执行策略限制.md  # PowerShell执行策略问题解决方案
+├── index.html
+├── vite.config.js
+├── config.js
+├── export-resume.js
+├── src/
+│   ├── index.js
+│   ├── style.css
+│   ├── data/
+│   │   └── resumeData.js
+│   ├── hooks/
+│   │   └── useResumeData.js
+│   ├── components/
+│   │   ├── Resume.jsx
+│   │   ├── Header.jsx
+│   │   ├── Summary.jsx
+│   │   ├── Skills.jsx
+│   │   ├── Education.jsx
+│   │   ├── Experience.jsx
+│   │   ├── Projects.jsx
+│   │   ├── Achievements.jsx
+│   │   └── EditableField.jsx
+│   └── pdf/
+│       ├── ResumePDF.jsx
+│       └── downloadResumePdf.js
+└── README.md
 ```
 
-## 技术栈
+## Data Editing
 
-- HTML/CSS - 简历内容和样式
-- Gulp - 开发服务器和自动刷新
-- Puppeteer - PDF和PNG导出
-- Node.js - 构建脚本
+- 默认简历内容在 `src/data/resumeData.js`
+- 页面中的编辑会写入浏览器 `localStorage`
+- 点击“重置”按钮会恢复默认数据
+
+## License
+
+MIT
