@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
-export default defineConfig({
-  base: '/lfc-resume/',
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/lfc-resume/' : '/',
   esbuild: {
     loader: 'jsx',
     include: /src\/.*\.[jt]sx?$/,
@@ -24,4 +24,4 @@ export default defineConfig({
   build: {
     outDir: 'dist'
   }
-});
+}));

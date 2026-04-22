@@ -126,6 +126,12 @@ lfc-resume/
 - 页面中的编辑会写入浏览器 `localStorage`
 - 点击“重置”按钮会恢复默认数据
 
+## AI Design Configuration
+
+- 项目根目录已加入 `DESIGN.md`，用于 AI 代理生成/重构时保持统一视觉风格
+- 主题建议与选型说明见 `docs/design-theme-recommendations.md`
+- 若需切换风格，可替换根目录 `DESIGN.md` 后让 AI 代理按该规范重构 UI
+
 ## License
 
 MIT
