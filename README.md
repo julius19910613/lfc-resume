@@ -81,6 +81,12 @@ npm run deploy
 
 部署前会自动执行 `npm run build`，构建输出目录为 `dist`。
 
+### Automatic Deployment (Recommended)
+
+- 已内置 GitHub Actions 工作流：`.github/workflows/deploy-pages.yml`
+- 当代码 push 到 `master` 分支时，会自动构建并发布到 `gh-pages`
+- 也支持在 GitHub Actions 页面手动触发 `workflow_dispatch`
+
 > 若仓库名变更，请同步更新 `vite.config.js` 中的 `base` 配置。
 
 ## Project Structure
