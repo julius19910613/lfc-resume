@@ -5,7 +5,7 @@ Font.register({
   family: 'NotoSansSC',
   fonts: [
     {
-      src: '/fonts/NotoSansSC-Regular.otf',
+      src: `${import.meta.env.BASE_URL}fonts/NotoSansSC-Regular.otf`,
       fontWeight: 400,
     },
   ],
