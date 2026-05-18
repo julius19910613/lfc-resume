@@ -1,8 +1,26 @@
 import React from 'react';
+import { TextInput } from '@mantine/core';
 import useResumeData from '../hooks/useResumeData';
 
 const Skills = () => {
   const { getSkills, getUi, editing, updateField } = useResumeData();
+
+  const handleSkillChange = (flatIndex, nextValue) => {
+    let count = 0;
+    for (let g = 0; g < getSkills.length; g++) {
+      for (let s = 0; s < getSkills[g].length; s++) {
+        if (count === flatIndex) {
+          const group = [...getSkills[g]];
+          group[s] = nextValue;
+          const newSkills = [...getSkills];
+          newSkills[g] = group;
+          updateField('skills', null, newSkills);
+          return;
+        }
+        count++;
+      }
+    }
+  };
 
   return (
     <div className="sidebar-section">
@@ -10,28 +28,12 @@ const Skills = () => {
       <div className="skills-list">
         {getSkills.flat().map((skill, index) => (
           editing ? (
-            <input
+            <TextInput
               key={index}
-              type="text"
-              className="skill-tag editable-skill"
               value={String(skill)}
-              onChange={e => {
-                const flatIndex = index;
-                let count = 0;
-                for (let g = 0; g < getSkills.length; g++) {
-                  for (let s = 0; s < getSkills[g].length; s++) {
-                    if (count === flatIndex) {
-                      const group = [...getSkills[g]];
-                      group[s] = e.target.value;
-                      const newSkills = [...getSkills];
-                      newSkills[g] = group;
-                      updateField('skills', null, newSkills);
-                      return;
-                    }
-                    count++;
-                  }
-                }
-              }}
+              onChange={e => handleSkillChange(index, e.target.value)}
+              variant="unstyled"
+              classNames={{ input: 'skill-tag editable-skill' }}
             />
           ) : (
             <span key={index} className="skill-tag">{String(skill).replace('• ', '')}</span>

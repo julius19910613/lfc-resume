@@ -1,4 +1,5 @@
 import React from 'react';
+import { ActionIcon } from '@mantine/core';
 import useResumeData from '../hooks/useResumeData';
 import EditableField from './EditableField';
 
@@ -10,13 +11,33 @@ const Projects = () => {
       <h2>
         {getUi.projectsTitle}
         {editing && (
-          <button type="button" className="add-btn" onClick={() => addItem('projects', { name: '', role: '', period: '', painPoints: [''], solutions: [''], results: '' })}>+</button>
+          <ActionIcon
+            type="button"
+            className="add-btn mantine-icon-btn"
+            variant="light"
+            color="indigo"
+            radius="xl"
+            onClick={() => addItem('projects', { name: '', role: '', period: '', painPoints: [''], solutions: [''], results: '' })}
+            aria-label={`Add ${getUi.projectsTitle}`}
+          >
+            +
+          </ActionIcon>
         )}
       </h2>
       {getProjects.map((project, index) => (
         <div key={index} className="project-item">
           {editing && (
-            <button type="button" className="remove-btn" onClick={() => removeItem('projects', index)}>×</button>
+            <ActionIcon
+              type="button"
+              className="remove-btn mantine-icon-btn"
+              variant="light"
+              color="red"
+              radius="xl"
+              onClick={() => removeItem('projects', index)}
+              aria-label={`Remove ${getUi.projectsTitle}`}
+            >
+              ×
+            </ActionIcon>
           )}
           <div className="sub">
             {editing ? (

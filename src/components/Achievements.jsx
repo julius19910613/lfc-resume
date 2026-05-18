@@ -1,4 +1,5 @@
 import React from 'react';
+import { ActionIcon } from '@mantine/core';
 import useResumeData from '../hooks/useResumeData';
 import EditableField from './EditableField';
 
@@ -12,13 +13,33 @@ const Achievements = () => {
       <h2>
         {getUi.achievementsTitle}
         {editing && (
-          <button type="button" className="add-btn" onClick={() => addItem('achievements', '')}>+</button>
+          <ActionIcon
+            type="button"
+            className="add-btn mantine-icon-btn"
+            variant="light"
+            color="indigo"
+            radius="xl"
+            onClick={() => addItem('achievements', '')}
+            aria-label={`Add ${getUi.achievementsTitle}`}
+          >
+            +
+          </ActionIcon>
         )}
       </h2>
       {getAchievements.map((item, idx) => (
         <div key={idx} className="achievement-entry">
           {editing && (
-            <button type="button" className="remove-btn" onClick={() => removeItem('achievements', idx)}>×</button>
+            <ActionIcon
+              type="button"
+              className="remove-btn mantine-icon-btn"
+              variant="light"
+              color="red"
+              radius="xl"
+              onClick={() => removeItem('achievements', idx)}
+              aria-label={`Remove ${getUi.achievementsTitle}`}
+            >
+              ×
+            </ActionIcon>
           )}
           {editing ? (
             <EditableField value={item} onChange={v => updateField('achievements', idx, v)} className="line editable-line" multiline />
